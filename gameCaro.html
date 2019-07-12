@@ -20,8 +20,8 @@
         this.y = y;
         this.value = VALUE_EMPTY;
         this.drawCellHtml = function () {
-            let top = DEFAULT_CELL_SIZE;
-            let left = DEFAULT_CELL_SIZE;
+            let top = this.x*DEFAULT_CELL_SIZE;
+            let left =this.y* DEFAULT_CELL_SIZE;
             let cellHtml = '<div id="cell-' + x + '-' + y + '" onclick="play(' + x + ',' + y + ')" class="cell" style="position: absolute; width: ' +
                 DEFAULT_CELL_SIZE + 'px; height:' +
                 DEFAULT_CELL_SIZE + 'px; left:' +
@@ -32,7 +32,7 @@
 
         };
         this.drawInCell = function () {
-            let cellDiv = document.getElementById("cell-'+x+'-'+y+'");
+            let cellDiv = document.getElementById("cell-"+x+"-"+y);
             switch (this.value) {
                 case VALUE_X:
                     cellDiv.innerText = "X";
@@ -69,6 +69,11 @@ var GameBoard = function (rows,cols,elementId) {
         }
 
     };
+    this.swicthTurn=function(){
+        if(this.turn===VALUE_O){
+            this.turn=VALUE_X
+        }else { this.turn=VALUE_O}
+    };
     this.play=function (x,y) {
         if(this.isOver){
             return;
@@ -77,14 +82,8 @@ var GameBoard = function (rows,cols,elementId) {
         if(cell.value===VALUE_EMPTY){
             cell.value= this.turn;
             cell.drawInCell();
-            this.checkValue=function(x,y){
-                if(this.turn===VALUE_O){
-                    this.turn=VALUE_X
-                }else { this.turn=VALUE_O}
-            }
-        }else{ alert("This cell is played");
-        }
-
+            this.swicthTurn();
+        }else{ alert("This cell is played")};
 
     };
     this.checkWinner=function (x,y) {
